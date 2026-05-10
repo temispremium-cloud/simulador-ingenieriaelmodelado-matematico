@@ -1,0 +1,530 @@
+:root {
+	--hue: 193;
+	--sat: 15%;
+	--white: hsl(0, 0%, 100%);
+	--gray50: hsl(var(--hue), var(--sat), 95%);
+	--gray100: hsl(var(--hue), var(--sat), 90%);
+	--gray150: hsl(var(--hue), var(--sat), 85%);
+	--gray200: hsl(var(--hue), var(--sat), 80%);
+	--gray300: hsl(var(--hue), var(--sat), 70%);
+	--gray400: hsl(var(--hue), var(--sat), 60%);
+	--gray500: hsl(var(--hue), var(--sat), 50%);
+	--gray600: hsl(var(--hue), var(--sat), 40%);
+	--gray650: hsl(var(--hue), var(--sat), 35%);
+	--gray700: hsl(var(--hue), var(--sat), 30%);
+	--gray750: hsl(var(--hue), var(--sat), 25%);
+	--gray800: hsl(var(--hue), var(--sat), 20%);
+	--gray900: hsl(var(--hue), var(--sat), 10%);
+	--black: hsl(0, 0%, 0%);
+	--backdrop: light-dark(hsla(var(--hue), var(--sat), 10%, 0.9), hsla(var(--hue), var(--sat), 5%, 0.9));
+	--glass: light-dark(hsla(0, 0%, 100%, 0.3), hsla(0, 0%, 100%, 0.04));
+	--shadow: hsla(0, 0%, 0%, 0.05);
+	--trans-dur: 0.3s;
+	--ease-out-sine: cubic-bezier(0.33, 1, 0.68, 1);
+	--ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+	--ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+	color-scheme: light dark;
+	font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.9rem);
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-bg: light-dark(var(--gray50), var(--gray900));
+  --color-brand-surface: light-dark(var(--white), var(--gray800));
+  --color-brand-border: light-dark(var(--gray200), var(--gray700));
+  --color-brand-accent: #06b6d4;
+  --color-brand-secondary: #f59e0b;
+  --color-brand-text: #000000;
+  --color-brand-muted: #333333;
+
+  --therm-bg: #f8fafc;
+  --therm-fg: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-brand-bg text-brand-text;
+  }
+}
+
+/* --- Custom "Physical" Sliders --- */
+.custom-slider-form {
+  --k: calc((var(--val) - var(--min)) / (var(--max) - var(--min)));
+  --pos: calc(1.125em + var(--k) * (100% - 2.25em));
+  display: grid;
+  grid-gap: 0.25em;
+  filter: saturate(var(--hl, 0.8));
+  transition: filter 0.3s ease-out;
+}
+
+.custom-slider-form:focus-within, .custom-slider-form:hover {
+  --hl: 1;
+}
+
+.custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2.25em;
+  border-radius: 2.25em;
+  box-shadow: 0 -1px #ddd, 0 1px #bbb;
+  background: linear-gradient(#f8f9fa, #e9ecef);
+  cursor: pointer;
+  width: 100%;
+}
+
+.custom-range::-webkit-slider-runnable-track {
+  margin: 0.375em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);
+  background: 
+    linear-gradient(#e3ee7c, #d5e45c) 0/ var(--pos) no-repeat, 
+    linear-gradient(#f1f5f9, #e2e8f0);
+}
+
+.custom-range::-moz-range-track {
+  height: 1.5em;
+  border-radius: 0.75em;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);
+  background: 
+    linear-gradient(#e3ee7c, #d5e45c) 0/ var(--pos) no-repeat, 
+    linear-gradient(#f1f5f9, #e2e8f0);
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  border: solid 0.375em transparent;
+  width: 2.25em;
+  height: 2.25em;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  background: 
+    linear-gradient(#eee, #999) padding-box, 
+    linear-gradient(#fff, #666) border-box;
+  cursor: ew-resize;
+  margin-top: -0.375em;
+}
+
+.custom-range::-moz-range-thumb {
+  box-sizing: border-box;
+  border: solid 0.375em transparent;
+  width: 2.25em;
+  height: 2.25em;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  background: 
+    linear-gradient(#eee, #999) padding-box, 
+    linear-gradient(#fff, #666) border-box;
+  cursor: ew-resize;
+}
+
+.custom-range:focus {
+  outline: none;
+}
+
+.thermometer {
+	background-image: linear-gradient(-135deg,hsl(223,10%,98%),hsl(223,10%,90%));
+	border-radius: 1em;
+	box-shadow:
+		0.2em 0 0.1em hsl(223,10%,90%) inset,
+		0 -0.2em 0.1em hsl(223,10%,90%) inset,
+		-0.1em 0 0 hsl(223,10%,95%) inset,
+		0 0.1em 0 hsl(223,10%,95%) inset;
+	margin: auto;
+	width: 8em;
+	height: 24em;
+  font-size: 11px;
+  position: relative;
+}
+.thermometer:before, .thermometer__inner, .thermometer__ring, .thermometer__tube:before {
+	position: absolute;
+}
+.thermometer:before, .thermometer__inner {
+	left: 1em;
+}
+.thermometer:before, .thermometer__tube:before {
+	content: "";
+	display: block;
+}
+.thermometer:before {
+	background-image: linear-gradient(hsl(223,10%,90%),hsl(223,10%,80%));
+	border-radius: 0.4em;
+	box-shadow:
+		-0.1em 0.1em 0.1em hsl(223,10%,55%) inset,
+		0.2em -0.2em 0.4em hsl(223,10%,100%) inset,
+		-0.3em 0.2em 0.4em hsl(223,10%,55%) inset,
+		0.1em -0.1em 0.1em hsl(223,10%,70%),
+		0.5em -0.5em 0.3em hsl(223,10%,65%),
+		0 0 0.4em 0.4em hsl(223,10%,100%);
+	top: 1em;
+	width: calc(100% - 2em);
+	height: calc(100% - 2em);
+}
+.thermometer__inner {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	top: 2.5em;
+	text-align: center;
+	width: calc(100% - 2em);
+	height: calc(100% - 7em);
+  position: absolute;
+  z-index: 2;
+}
+.thermometer__c, .thermometer__f {
+  position: relative;
+	flex-basis: calc(50% - 1em);
+	height: 100%;
+}
+.thermometer__label {
+  position: absolute;
+  width: 100%;
+  font-size: 0.65rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 600;
+  color: #444;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+.thermometer__c .thermometer__label { 
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+.thermometer__f .thermometer__label { 
+  justify-content: flex-start;
+  padding-left: 0.5rem;
+  border-left: 1px solid rgba(0,0,0,0.1);
+}
+.thermometer__mercury, .thermometer__tube:before {
+	height: 100%;
+}
+.thermometer__mercury {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform-origin: bottom;
+  height: 100%;
+  background-color: var(--thermometer-color, #f44336);
+  transition: background-color 0.5s ease;
+	box-shadow: 
+    0.05em 0 0 hsla(0,0%,100%,0.3) inset,
+    -0.05em 0 0 hsla(0,0%,0%,0.2) inset;
+}
+.thermometer__ring {
+	border-radius: 50% 50% 0 0;
+	box-shadow: 0 0.05em 0 0.05em hsla(223,10%,80%,0.4) inset;
+	top: 0.6em;
+	left: calc(50% - 0.3em);
+	width: 0.6em;
+	height: 0.2em;
+}
+.thermometer__ring + .thermometer__ring {
+	border-radius: 0 0 50% 50%;
+	box-shadow: 0 -0.05em 0 0.05em hsla(223,10%,80%,0.4) inset;
+	top: 20.2em;
+}
+.thermometer__title {
+	flex-basis: 50%;
+  font-family: inherit;
+  color: #17181c;
+}
+.thermometer__tube, .thermometer__tube:before {
+	border-radius: 0.3em 0.3em 0 0;
+}
+.thermometer__tube {
+	box-shadow:
+		-0.1em 0.1em 0.25em hsla(0,0%,0%,0.1),
+		0.05em 0 0 hsla(0,0%,100%,0.5) inset,
+		0.1em 0 0.1em hsla(0,0%,0%,0.05) inset;
+	flex-basis: 0.4em;
+  position: relative;
+  height: 100%;
+  background: rgba(255,255,255,0.4);
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 0.4em 0.4em 0 0;
+}
+.thermometer__tube:before {
+	background: linear-gradient(hsla(0,0%,100%,0.5),hsla(0,0%,100%,0)) 100% 0 / 25% 100% no-repeat;
+	box-shadow: -0.05em 0 0.05em hsla(0,0%,0%,0.2) inset;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+}
+.thermometer__bulb {
+	background-color: var(--thermometer-color, #f44336);
+  background-image: radial-gradient(circle at 65% 35%, rgba(255,255,255,0.3) 0%, transparent 20%);
+	border-radius: 50%;
+  transition: background-color 0.5s ease;
+	box-shadow:
+		0 -0.1em 0.2em rgba(0,0,0,0.1),
+		0 0 0 0.1em hsl(223,10%,90%),
+		0 0 0 0.15em hsl(223,10%,98%),
+		0 0 0 0.2em hsl(223,10%,85%),
+		0 0 0 0.05em rgba(0,0,0,0.05) inset;
+	width: 2.2em;
+	height: 2.2em;
+  position: absolute;
+  bottom: 1.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+.thermometer__label {
+  font-size: 0.8em;
+  color: #17181c;
+}
+
+/* Dark theme overrides specifically for thermometer if needed */
+@media (prefers-color-scheme: dark) {
+	.thermometer {
+		background-image: linear-gradient(-135deg,hsl(223,10%,95%),hsl(223,10%,85%));
+		box-shadow:
+			0.2em 0 0.1em hsl(223,10%,85%) inset,
+			0 -0.2em 0.1em hsl(223,10%,85%) inset,
+			-0.1em 0 0 hsl(223,10%,90%) inset,
+			0 0.1em 0 hsl(223,10%,90%) inset;
+	}
+	.thermometer:before {
+		background-image: linear-gradient(hsl(223,10%,40%),hsl(223,10%,30%));
+		box-shadow:
+			-0.1em 0.1em 0.1em hsl(223,10%,5%) inset,
+			0.2em -0.2em 0.4em hsl(223,10%,40%) inset,
+			-0.3em 0.2em 0.4em hsl(223,10%,5%) inset,
+			0.1em -0.1em 0.1em hsl(223,10%,20%),
+			0.5em -0.5em 0.3em hsl(223,10%,15%),
+			0 0 0.4em 0.4em hsl(223,10%,40%);
+	}
+	.thermometer__c, .thermometer__f {
+		background-image:
+			linear-gradient(hsl(0,0%,100%) 0.1em,hsla(0,0%,100%,0) 0.1em),
+			linear-gradient(hsl(0,0%,100%) 0.1em,hsla(0,0%,100%,0) 0.1em);
+	}
+  .thermometer__title, .thermometer__label {
+    color: #e3e4e8 !important;
+  }
+	.thermometer__ring {
+		box-shadow: 0 0.05em 0 0.05em hsla(223,10%,80%,0.4) inset;
+	}
+	.thermometer__ring + .thermometer__ring {
+		box-shadow: 0 -0.05em 0 0.05em hsla(223,10%,80%,0.4) inset;
+	}
+	.thermometer__bulb {
+		box-shadow:
+			0 -0.1em 0.2em rgba(0,0,0,0.05),
+			0 0 0 0.1em hsl(223,10%,80%),
+			0 0 0 0.15em hsl(223,10%,95%),
+			0 0 0 0.2em hsl(223,10%,80%),
+			0 0 0 0.05em rgba(0,0,0,0.02) inset;
+	}
+}
+
+/* Overload States */
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-2px) rotate(-0.5deg); }
+  75% { transform: translateX(2px) rotate(0.5deg); }
+}
+
+@keyframes pulse-overload {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.8; filter: brightness(1.5); }
+}
+
+.thermometer--overload {
+  animation: shake 0.1s infinite;
+}
+
+.thermometer--overload .thermometer__mercury {
+  background-color: #ff0000 !important;
+  animation: pulse-overload 1s infinite ease-in-out;
+}
+
+/* Fire Button Effect */
+.fire-btn {
+  border-radius: 50%;
+  color: hsl(0,0%,100%);
+  font-weight: bold;
+  filter: url(#fire);
+  position: relative;
+  width: 2.8rem;
+  height: 2.8rem;
+  transition: transform 0.1s linear;
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+.fire-btn__p,
+.fire-btn__text {
+  background: hsl(3,90%,55%);
+  border-radius: 50%;
+  transition: background 0.15s linear;
+}
+
+.fire-btn__p {
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  pointer-events: none;
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.fire-btn__text {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.fire-btn:active {
+  transform: translateY(0.1rem);
+}
+
+.fire-btn:focus .fire-btn__p,
+.fire-btn:focus .fire-btn__text,
+.fire-btn:hover .fire-btn__p,
+.fire-btn:hover .fire-btn__text {
+  background: hsl(18,90%,55%);
+}
+
+.fire-btn:focus .fire-btn__p,
+.fire-btn:hover .fire-btn__p {
+  animation-duration: 0.5s;
+}
+
+@keyframes rise1 { from { transform: translate(0,0) scale(1); } 50% { transform: translate(0.1rem,-1.5rem) scale(1); } to { transform: translate(0.2rem,-3rem) scale(0); } }
+@keyframes rise2 { from { transform: translate(0,0) scale(1); } 50% { transform: translate(-0.1rem,-1.2rem) scale(1); } to { transform: translate(-0.15rem,-2.5rem) scale(0); } }
+@keyframes rise3 { from { transform: translate(0,0) scale(1); } 50% { transform: translate(0.05rem,-1.8rem) scale(1); } to { transform: translate(0.1rem,-3.5rem) scale(0); } }
+@keyframes rise4 { from { transform: translate(0,0) scale(1); } 50% { transform: translate(-0.2rem,-1rem) scale(1); } to { transform: translate(-0.3rem,-2rem) scale(0); } }
+@keyframes rise5 { from { transform: translate(0,0) scale(1); } 50% { transform: translate(0.15rem,-1.4rem) scale(1); } to { transform: translate(0.25rem,-2.8rem) scale(0); } }
+
+.fire-btn__p:nth-child(1) { animation-name: rise1; animation-delay: -0.1s; left: 10%; top: 50%; }
+.fire-btn__p:nth-child(2) { animation-name: rise2; animation-delay: -0.3s; left: 20%; top: 50%; }
+.fire-btn__p:nth-child(3) { animation-name: rise3; animation-delay: -0.5s; left: 30%; top: 50%; }
+.fire-btn__p:nth-child(4) { animation-name: rise4; animation-delay: -0.7s; left: 40%; top: 50%; }
+.fire-btn__p:nth-child(5) { animation-name: rise5; animation-delay: -0.9s; left: 50%; top: 50%; }
+.fire-btn__p:nth-child(6) { animation-name: rise1; animation-delay: -0.2s; left: 60%; top: 50%; }
+.fire-btn__p:nth-child(7) { animation-name: rise2; animation-delay: -0.4s; left: 70%; top: 50%; }
+.fire-btn__p:nth-child(8) { animation-name: rise3; animation-delay: -0.6s; left: 80%; top: 50%; }
+.fire-btn__p:nth-child(9) { animation-name: rise4; animation-delay: -0.8s; left: 90%; top: 50%; }
+.fire-btn__p:nth-child(10) { animation-name: rise5; animation-delay: -1.0s; left: 15%; top: 50%; }
+.fire-btn__p:nth-child(11) { animation-name: rise1; animation-delay: -0.15s; left: 25%; top: 50%; }
+.fire-btn__p:nth-child(12) { animation-name: rise2; animation-delay: -0.35s; left: 35%; top: 50%; }
+.fire-btn__p:nth-child(13) { animation-name: rise3; animation-delay: -0.55s; left: 45%; top: 50%; }
+.fire-btn__p:nth-child(14) { animation-name: rise4; animation-delay: -0.75s; left: 55%; top: 50%; }
+.fire-btn__p:nth-child(15) { animation-name: rise5; animation-delay: -0.95s; left: 65%; top: 50%; }
+.fire-btn__p:nth-child(16) { animation-name: rise1; animation-delay: -0.25s; left: 75%; top: 50%; }
+.fire-btn__p:nth-child(17) { animation-name: rise2; animation-delay: -0.45s; left: 85%; top: 50%; }
+.fire-btn__p:nth-child(18) { animation-name: rise3; animation-delay: -0.65s; left: 5%; top: 50%; }
+.fire-btn__p:nth-child(19) { animation-name: rise4; animation-delay: -0.85s; left: 95%; top: 50%; }
+.fire-btn__p:nth-child(20) { animation-name: rise5; animation-delay: -0.05s; left: 50%; top: 50%; }
+
+/* --- Utility Classes --- */
+.widget {
+  @apply bg-brand-surface rounded-md border border-brand-border backdrop-blur-md relative;
+}
+
+.btn {
+  @apply flex items-center gap-2 px-6 py-2.5 rounded-md font-bold text-xs uppercase tracking-widest transition-all;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-brand-border rounded-full;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-brand-muted/40;
+}
+
+/* --- Mixing Tank Animations --- */
+@keyframes wave-front {
+  100% { transform: translate(-50%, 0); }
+}
+
+@keyframes wave-back {
+  100% { transform: translate(50%, 0); }
+}
+
+@keyframes bubble-rise {
+  0% { opacity: 0; transform: scale(0) translate(0, 0); }
+  25% { opacity: 1; transform: scale(0.3) translate(10px, -20px); }
+  50% { transform: scale(0.5) translate(-10px, -40px); }
+  75% { transform: scale(0.8) translate(10px, -60px); }
+  100% { opacity: 0; transform: scale(1) translate(0, -90px); }
+}
+
+.animate-wave-front {
+  animation: wave-front 2s infinite linear;
+}
+
+.animate-wave-back {
+  animation: wave-back 3s infinite linear;
+}
+
+/* --- Population Planet Animations --- */
+@keyframes rotate-planet {
+  from { background-position: 0% 0; }
+  to { background-position: 200% 0; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+
+.animate-rotate-planet {
+  animation: rotate-planet 30s linear infinite;
+}
+
+@keyframes urban-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(52, 211, 153, 0.5); transform: scale(1); }
+  50% { box-shadow: 0 0 15px rgba(52, 211, 153, 0.8); transform: scale(1.1); }
+}
+
+.animate-urban-glow {
+  animation: urban-glow 3s infinite ease-in-out;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scan {
+  animation: scan-line 4s infinite linear;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+

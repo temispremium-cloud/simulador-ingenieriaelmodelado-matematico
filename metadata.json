@@ -1,0 +1,6 @@
+{
+  "name": "Simulador de Ecuaciones Diferenciales - UniGuajira",
+  "description": "Aplicativo para la simulación de modelos matemáticos: Ley de enfriamiento de Newton, Crecimiento poblacional y Mezclas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
